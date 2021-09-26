@@ -2,3 +2,4 @@
 /api-notificacao-golang.exe
 /api-notificacao-golang
 /.env
+/gorm.db
