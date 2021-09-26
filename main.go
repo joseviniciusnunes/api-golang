@@ -5,34 +5,22 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/joseviniciusnunes/api-notificacao-golang/src/app/aplicativo"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
+	"github.com/joseviniciusnunes/api-notificacao-golang/src/app/aplicativos"
+	"github.com/joseviniciusnunes/api-notificacao-golang/src/database"
+	"github.com/labstack/echo/v4"
 )
-
-var db *gorm.DB
 
 func main() {
 
 	godotenv.Load()
 
-	startDatabase()
+	database.ConnectToDatabase()
 
 	port := os.Getenv("PORT")
 
-	router := mux.NewRouter()
-	aplicativo.RegisterRoute(router)
+	router := echo.New()
+	aplicativos.RegisterRoute(router)
 	fmt.Println("Listen on " + port)
 	http.ListenAndServe(":"+port, router)
-}
-
-func startDatabase() {
-	var err error
-	db, err = gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
-	if err != nil {
-		fmt.Println(err.Error())
-		panic("failed to connect database")
-	}
 }
