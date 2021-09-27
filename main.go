@@ -15,7 +15,11 @@ func main() {
 
 	godotenv.Load()
 
-	database.ConnectToDatabase()
+	errCon := database.ConnectToDatabase()
+	if errCon != nil {
+		fmt.Println(errCon.Error())
+		panic("failed to connect database")
+	}
 
 	port := os.Getenv("PORT")
 

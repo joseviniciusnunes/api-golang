@@ -1,9 +1,10 @@
 package aplicativos
 
 import (
-	"fmt"
+	"errors"
 
 	db "github.com/joseviniciusnunes/api-notificacao-golang/src/database"
+	"gorm.io/gorm"
 )
 
 func CriarAplicativo(dto *AplicativoDtoRequest) (AplicativoModel, error) {
@@ -15,14 +16,20 @@ func CriarAplicativo(dto *AplicativoDtoRequest) (AplicativoModel, error) {
 
 	result := db.Con.Create(&aplicativoCreated)
 
-	fmt.Println(aplicativoCreated.Id)
-	fmt.Println(result.Error)
-
-	return aplicativoCreated, nil
+	return aplicativoCreated, result.Error
 }
 
-func ObterAplicativos() []AplicativoModel {
+func ObterAplicativos() ([]AplicativoModel, error) {
 	result := []AplicativoModel{}
-	db.Con.Find(&result)
-	return result
+	response := db.Con.Find(&result)
+	return result, response.Error
+}
+
+func ObterAplicativo(id int) (AplicativoModel, error) {
+	result := AplicativoModel{}
+	response := db.Con.First(&result, id)
+	if errors.Is(response.Error, gorm.ErrRecordNotFound) {
+		return result, errors.New("Nenhum aplicativo foi encontrado")
+	}
+	return result, response.Error
 }

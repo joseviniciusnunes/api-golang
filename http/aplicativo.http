@@ -4,7 +4,7 @@ GET {{url}}/v1/aplicativos HTTP/1.1
 
 ###
 
-GET {{url}}/v1/aplicativos/1 HTTP/1.1
+GET {{url}}/v1/aplicativos/128 HTTP/1.1
 
 ###
 
