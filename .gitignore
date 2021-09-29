@@ -4,3 +4,4 @@
 /api-notificacao-golang
 /.env
 /gorm.db
+/.air.toml
