@@ -7,9 +7,10 @@ import (
 )
 
 type ResponseHttp struct {
-	Code  int
-	Body  interface{}
-	Error error
+	Code    int
+	Body    interface{}
+	Error   error
+	Headers map[string]string
 }
 
 type ErrorResponse struct {
@@ -17,50 +18,62 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-func (res ResponseHttp) Success(body interface{}) ResponseHttp {
+func Success(body interface{}) ResponseHttp {
+	var res ResponseHttp
 	res.Code = 200
 	res.Body = body
 	res.Error = nil
 	return res
 }
 
-func (res ResponseHttp) Created(body interface{}) ResponseHttp {
+func Created(body interface{}) ResponseHttp {
+	var res ResponseHttp
 	res.Code = 201
 	res.Body = body
 	res.Error = nil
 	return res
 }
 
-func (res ResponseHttp) BadRequest(message string) ResponseHttp {
+func BadRequest(message string) ResponseHttp {
+	var res ResponseHttp
 	res.Code = 400
 	res.Body = nil
 	res.Error = errors.New(message)
 	return res
 }
 
-func (res ResponseHttp) Unauthorized(message string) ResponseHttp {
+func Unauthorized(message string) ResponseHttp {
+	var res ResponseHttp
 	res.Code = 401
 	res.Body = nil
 	res.Error = errors.New(message)
 	return res
 }
 
-func (res ResponseHttp) InternalServerError(message string) ResponseHttp {
+func Forbidden(message string) ResponseHttp {
+	var res ResponseHttp
+	res.Code = 403
+	res.Body = nil
+	res.Error = errors.New(message)
+	return res
+}
+
+func InternalServerError(message string) ResponseHttp {
+	var res ResponseHttp
 	res.Code = 500
 	res.Body = nil
 	res.Error = errors.New(message)
 	return res
 }
 
-func HandlerResponse(fn func(ResponseHttp, echo.Context) ResponseHttp) func(ctx echo.Context) error {
+func HandlerResponse(fn func(echo.Context) ResponseHttp) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
-		var response ResponseHttp
-		returned := fn(response, ctx)
+		returned := fn(ctx)
 
 		if returned.Code == 500 {
 			error := ErrorResponse{
 				Status:  returned.Code,
-				Message: "Infelizmente estamos com problemas internos, já estamos trabalhando para resolve-lo",
+				Message: "Infelizmente estamos com problemas internos, já estamos trabalhando para resolve-los",
 			}
 			return ctx.JSON(returned.Code, error)
 		}

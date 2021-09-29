@@ -3,33 +3,33 @@ package aplicativos
 import (
 	"strconv"
 
-	res "github.com/joseviniciusnunes/api-notificacao-golang/src/helpers/ResponseHttp"
+	Response "github.com/joseviniciusnunes/api-notificacao-golang/src/helpers/ResponseHttp"
 	"github.com/labstack/echo/v4"
 )
 
 func RegisterRoute(router *echo.Echo) {
-	router.GET("/api/v1/aplicativos", res.HandlerResponse(obterAplicativos))
-	router.GET("/api/v1/aplicativos/:id", res.HandlerResponse(obterAplicativo))
-	router.POST("/api/v1/aplicativos", res.HandlerResponse(criarAplicativo))
+	router.GET("/api/v1/aplicativos", Response.HandlerResponse(obterAplicativos))
+	router.GET("/api/v1/aplicativos/:id", Response.HandlerResponse(obterAplicativo))
+	router.POST("/api/v1/aplicativos", Response.HandlerResponse(criarAplicativo))
 }
 
-func obterAplicativos(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
-	return ObterAplicativos(response)
+func obterAplicativos(ctx echo.Context) Response.ResponseHttp {
+	return ObterAplicativos()
 }
 
-func obterAplicativo(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
+func obterAplicativo(ctx echo.Context) Response.ResponseHttp {
 	var id int
 	var err error
 	if id, err = strconv.Atoi(ctx.Param("id")); err != nil {
-		return response.InternalServerError(ctx.Param("id") + " é um ID inválido")
+		return Response.InternalServerError(ctx.Param("id") + " é um ID inválido")
 	}
-	return ObterAplicativo(response, id)
+	return ObterAplicativo(id)
 }
 
-func criarAplicativo(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
-	aplicativoDto := new(AplicativoDtoRequest)
+func criarAplicativo(ctx echo.Context) Response.ResponseHttp {
+	aplicativoDto := new(CriarAplicativoDtoRequest)
 	if errBind := ctx.Bind(aplicativoDto); errBind != nil {
-		return response.InternalServerError(errBind.Error())
+		return Response.InternalServerError(errBind.Error())
 	}
-	return CriarAplicativo(response, aplicativoDto)
+	return CriarAplicativo(aplicativoDto)
 }

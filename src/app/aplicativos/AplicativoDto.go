@@ -2,7 +2,7 @@ package aplicativos
 
 import "time"
 
-type AplicativoDtoRequest struct {
+type CriarAplicativoDtoRequest struct {
 	Id                   *string    `json:"id"`
 	Nome                 *string    `json:"nome"`
 	ExcluidoEm           *time.Time `json:"excluidoEm"`
@@ -15,6 +15,6 @@ type AplicativoDtoRequest struct {
 	CredencialFirebase   *string    `json:"credencialFirebase"`
 }
 
-func (dto AplicativoDtoRequest) IsValid() error {
+func (dto CriarAplicativoDtoRequest) IsValid() error {
 	return nil
 }

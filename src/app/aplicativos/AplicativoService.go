@@ -4,11 +4,11 @@ import (
 	"errors"
 
 	db "github.com/joseviniciusnunes/api-notificacao-golang/src/database"
-	res "github.com/joseviniciusnunes/api-notificacao-golang/src/helpers/ResponseHttp"
+	Response "github.com/joseviniciusnunes/api-notificacao-golang/src/helpers/ResponseHttp"
 	"gorm.io/gorm"
 )
 
-func CriarAplicativo(response res.ResponseHttp, dto *AplicativoDtoRequest) res.ResponseHttp {
+func CriarAplicativo(dto *CriarAplicativoDtoRequest) Response.ResponseHttp {
 
 	aplicativoCreated := AplicativoModel{
 		Nome:               dto.Nome,
@@ -18,26 +18,26 @@ func CriarAplicativo(response res.ResponseHttp, dto *AplicativoDtoRequest) res.R
 	result := db.Con.Create(&aplicativoCreated)
 
 	if result.Error != nil {
-		return response.InternalServerError(result.Error.Error())
+		return Response.InternalServerError(result.Error.Error())
 	}
 
-	return response.Created(aplicativoCreated)
+	return Response.Created(aplicativoCreated)
 }
 
-func ObterAplicativos(response res.ResponseHttp) res.ResponseHttp {
+func ObterAplicativos() Response.ResponseHttp {
 	result := []AplicativoModel{}
 	returned := db.Con.Find(&result)
 	if returned.Error != nil {
-		return response.InternalServerError(returned.Error.Error())
+		return Response.InternalServerError(returned.Error.Error())
 	}
-	return response.Success(result)
+	return Response.Success(result)
 }
 
-func ObterAplicativo(response res.ResponseHttp, id int) res.ResponseHttp {
+func ObterAplicativo(id int) Response.ResponseHttp {
 	result := AplicativoModel{}
 	returned := db.Con.First(&result, id)
 	if errors.Is(returned.Error, gorm.ErrRecordNotFound) {
-		return response.BadRequest("Nenhum aplicativo foi encontrado")
+		return Response.BadRequest("Nenhum aplicativo foi encontrado")
 	}
-	return response.Success(result)
+	return Response.Success(result)
 }
