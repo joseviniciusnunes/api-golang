@@ -1,47 +1,35 @@
 package aplicativos
 
 import (
-	"net/http"
 	"strconv"
 
+	res "github.com/joseviniciusnunes/api-notificacao-golang/src/helpers/ResponseHttp"
 	"github.com/labstack/echo/v4"
 )
 
 func RegisterRoute(router *echo.Echo) {
-	router.GET("/api/v1/aplicativos", obterAplicativos)
-	router.GET("/api/v1/aplicativos/:id", obterAplicativo)
-	router.POST("/api/v1/aplicativos", criarAplicativo)
+	router.GET("/api/v1/aplicativos", res.HandlerResponse(obterAplicativos))
+	router.GET("/api/v1/aplicativos/:id", res.HandlerResponse(obterAplicativo))
+	router.POST("/api/v1/aplicativos", res.HandlerResponse(criarAplicativo))
 }
 
-func obterAplicativos(ctx echo.Context) error {
-	result, err := ObterAplicativos()
-	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, "Erro ao buscar lista de aplicativos")
-	}
-	return ctx.JSON(http.StatusCreated, result)
+func obterAplicativos(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
+	return ObterAplicativos(response)
 }
 
-func obterAplicativo(ctx echo.Context) error {
+func obterAplicativo(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
 	var id int
 	var err error
 	if id, err = strconv.Atoi(ctx.Param("id")); err != nil {
-		return ctx.JSON(http.StatusBadRequest, ctx.Param("id")+" é um ID inválido")
+		return response.InternalServerError(ctx.Param("id") + " é um ID inválido")
 	}
-	result, errFind := ObterAplicativo(id)
-	if errFind != nil {
-		return ctx.JSON(http.StatusBadRequest, "Erro ao buscar aplicativo")
-	}
-	return ctx.JSON(http.StatusCreated, result)
+	return ObterAplicativo(response, id)
 }
 
-func criarAplicativo(ctx echo.Context) error {
+func criarAplicativo(response res.ResponseHttp, ctx echo.Context) res.ResponseHttp {
 	aplicativoDto := new(AplicativoDtoRequest)
 	if errBind := ctx.Bind(aplicativoDto); errBind != nil {
-		return errBind
+		return response.InternalServerError(errBind.Error())
 	}
-	aplicativoCreated, errService := CriarAplicativo(aplicativoDto)
-	if errService != nil {
-		return errService
-	}
-	return ctx.JSON(http.StatusCreated, aplicativoCreated)
+	return CriarAplicativo(response, aplicativoDto)
 }
