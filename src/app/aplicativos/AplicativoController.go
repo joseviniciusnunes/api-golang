@@ -11,6 +11,8 @@ func RegisterRoute(router *echo.Echo) {
 	router.GET("/api/v1/aplicativos", Response.HandlerResponse(obterAplicativos))
 	router.GET("/api/v1/aplicativos/:id", Response.HandlerResponse(obterAplicativo))
 	router.POST("/api/v1/aplicativos", Response.HandlerResponse(criarAplicativo))
+	router.PUT("/api/v1/aplicativos/:id", Response.HandlerResponse(alterarAplicativo))
+	router.DELETE("/api/v1/aplicativos/:id", Response.HandlerResponse(deletarAplicativo))
 }
 
 func obterAplicativos(ctx echo.Context) Response.ResponseHttp {
@@ -32,4 +34,26 @@ func criarAplicativo(ctx echo.Context) Response.ResponseHttp {
 		return Response.InternalServerError(errBind.Error())
 	}
 	return CriarAplicativo(aplicativoDto)
+}
+
+func alterarAplicativo(ctx echo.Context) Response.ResponseHttp {
+	var id int
+	var err error
+	if id, err = strconv.Atoi(ctx.Param("id")); err != nil {
+		return Response.InternalServerError(ctx.Param("id") + " é um ID inválido")
+	}
+	aplicativoDto := new(AlterarAplicativoDtoRequest)
+	if errBind := ctx.Bind(aplicativoDto); errBind != nil {
+		return Response.InternalServerError(errBind.Error())
+	}
+	return AlterarAplicativo(aplicativoDto, id)
+}
+
+func deletarAplicativo(ctx echo.Context) Response.ResponseHttp {
+	var id int
+	var err error
+	if id, err = strconv.Atoi(ctx.Param("id")); err != nil {
+		return Response.InternalServerError(ctx.Param("id") + " é um ID inválido")
+	}
+	return DeletarAplicativo(id)
 }

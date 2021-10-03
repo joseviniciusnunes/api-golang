@@ -15,3 +15,15 @@ content-type: application/json
     "nome": "Aplicativo 1",
     "credencialFirebase": "{certificado: \"xxx\"}"
 }
+###
+
+PUT {{url}}/v1/aplicativos/1 HTTP/1.1
+content-type: application/json
+
+{
+    "nome": "Aplicativo de Teste",
+    "credencialFirebase": "{certificado: \"xxx\"}"
+}
+###
+
+DELETE {{url}}/v1/aplicativos/1 HTTP/1.1
