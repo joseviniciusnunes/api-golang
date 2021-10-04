@@ -79,5 +79,6 @@ func DeletarAplicativo(id int) Response.ResponseHttp {
 		return Response.InternalServerError(returned.Error.Error())
 	}
 
-	return Response.SuccessMessage("Aplicativo deletado com sucesso")
+	return Response.Success(Response.Men{"message": "Aplicativo deletado com sucesso"})
+
 }

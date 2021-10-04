@@ -18,24 +18,12 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-type MessageResponse struct {
-	Message string `json:"message"`
-}
+type Men map[string]interface{}
 
 func Success(body interface{}) ResponseHttp {
 	var res ResponseHttp
 	res.Code = 200
 	res.Body = body
-	res.Error = nil
-	return res
-}
-
-func SuccessMessage(message string) ResponseHttp {
-	var res ResponseHttp
-	res.Code = 200
-	res.Body = MessageResponse{
-		Message: message,
-	}
 	res.Error = nil
 	return res
 }
