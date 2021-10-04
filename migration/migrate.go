@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/joho/godotenv"
 	"github.com/joseviniciusnunes/api-notificacao-golang/src/app/aplicativos"
 	"github.com/joseviniciusnunes/api-notificacao-golang/src/database"
@@ -10,11 +8,14 @@ import (
 )
 
 func main() {
-	godotenv.Load("../.env")
+	errEnv := godotenv.Load("../.env")
+	if errEnv != nil {
+		panic(errEnv.Error())
+	}
+
 	errCon := database.ConnectToDatabase()
 	if errCon != nil {
-		fmt.Println(errCon.Error())
-		panic("failed to connect database")
+		panic(errCon.Error())
 	}
 	err := db.Con.AutoMigrate(&aplicativos.AplicativoModel{})
 	if err != nil {

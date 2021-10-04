@@ -17,7 +17,7 @@ content-type: application/json
 }
 ###
 
-PUT {{url}}/v1/aplicativos/1 HTTP/1.1
+PUT {{url}}/v1/aplicativos/2 HTTP/1.1
 content-type: application/json
 
 {
@@ -26,4 +26,4 @@ content-type: application/json
 }
 ###
 
-DELETE {{url}}/v1/aplicativos/1 HTTP/1.1
+DELETE {{url}}/v1/aplicativos/2 HTTP/1.1
