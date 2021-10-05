@@ -1,0 +1,37 @@
+@url = http://127.0.0.1:3001/api
+
+GET {{url}}/v1/assuntos HTTP/1.1
+
+###
+
+GET {{url}}/v1/assuntos/2 HTTP/1.1
+
+###
+
+POST {{url}}/v1/assuntos HTTP/1.1
+content-type: application/json
+
+{
+    "titulo": "teste 123",
+    "conteudo": "Uma nova carga foi entregue",
+    "icone": "Ionicons.truck",
+    "chaveAcaoApp": "CARGA_ENTREGUE",
+    "opcional": true,
+    "topico": false
+}
+###
+
+PUT {{url}}/v1/assuntos/2 HTTP/1.1
+content-type: application/json
+
+{
+    "titulo": "Carga entregue",
+    "conteudo": "Uma nova carga foi entregue",
+    "icone": "Ionicons.truck",
+    "chaveAcaoApp": "CARGA_ENTREGUE",
+    "opcional": true,
+    "topico": false
+}
+###
+
+DELETE {{url}}/v1/assuntos/1 HTTP/1.1
