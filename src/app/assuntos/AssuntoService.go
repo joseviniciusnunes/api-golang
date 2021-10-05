@@ -87,5 +87,5 @@ func DeletarAssunto(id int) Response.ResponseHttp {
 		return Response.InternalServerError(returned.Error.Error())
 	}
 
-	return Response.SuccessMessage("Assunto deletado com sucesso")
+	return Response.Success(Response.Men{"message": "Assunto deletado com sucesso"})
 }

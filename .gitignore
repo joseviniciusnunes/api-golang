@@ -5,3 +5,6 @@
 /.env
 /gorm.db
 /.air.toml
+
+/main
+/main.exe
