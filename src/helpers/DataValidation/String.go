@@ -62,29 +62,32 @@ func (s *TypeString) Validate(value *string) error {
 
 	fmt.Println(fmt.Sprint(varString))
 
+	var text TextString
+	text.Value = *value
+
 	if value == nil {
 		if *s.notNull == true {
-			return errors.New(ReplaceTextMessage(MessageNotNull, s, varString))
+			return errors.New(ReplaceTextMessage(MessageNotNull, s, text))
 		}
 	} else {
 		if s.min != nil {
 			if len(*value) < *s.min {
-				return errors.New(ReplaceTextMessage(MessageMin, s, value))
+				return errors.New(ReplaceTextMessage(MessageMin, s, text))
 			}
 		}
 		if s.max != nil {
 			if len(*value) > *s.max {
-				return errors.New(ReplaceTextMessage(MessageMax, s, value))
+				return errors.New(ReplaceTextMessage(MessageMax, s, text))
 			}
 		}
 		if *s.notEmpty == true {
 			if *value == "" {
-				return errors.New(ReplaceTextMessage(MessageNotEmpty, s, value))
+				return errors.New(ReplaceTextMessage(MessageNotEmpty, s, text))
 			}
 		}
 		if *s.isEmail == true {
 			if !isEmailValid(*value) {
-				return errors.New(ReplaceTextMessage(MessageEmail, s, value))
+				return errors.New(ReplaceTextMessage(MessageEmail, s, text))
 			}
 		}
 	}

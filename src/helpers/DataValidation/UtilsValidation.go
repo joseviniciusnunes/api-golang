@@ -5,7 +5,27 @@ import (
 	"strings"
 )
 
-func ReplaceTextMessage(messageBase string, s *TypeString, value *string) string {
+type Generic interface {
+	GetValue() string
+}
+
+type TextString struct {
+	Value string
+}
+
+func (t TextString) GetValue() string {
+	return t.Value
+}
+
+type TextInteger struct {
+	Value int
+}
+
+func (t TextInteger) GetValue() string {
+	return fmt.Sprint(t.Value)
+}
+
+func ReplaceTextMessage(messageBase string, s *TypeString, text Generic) string {
 	var message = messageBase
 	message = strings.ReplaceAll(message, "{{label}}", *s.label)
 	if s.min != nil {
@@ -14,6 +34,6 @@ func ReplaceTextMessage(messageBase string, s *TypeString, value *string) string
 	if s.max != nil {
 		message = strings.ReplaceAll(message, "{{max}}", fmt.Sprint(*s.max))
 	}
-	message = strings.ReplaceAll(message, "{{value}}", fmt.Sprint(*value))
+	message = strings.ReplaceAll(message, "{{value}}", text.GetValue())
 	return message
 }

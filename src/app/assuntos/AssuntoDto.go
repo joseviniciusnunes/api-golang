@@ -16,7 +16,7 @@ type CriarAssuntoDtoRequest struct {
 func (dto CriarAssuntoDtoRequest) IsValid() []error {
 
 	var errs []error
-	if err := datavalidation.String("Título").NotNull(true).Min(5).Max(30).Validate(dto.Titulo); err != nil {
+	if err := datavalidation.String("Título").NotNull(true).IsEmail(true).Validate(dto.Titulo); err != nil {
 		errs = append(errs, err)
 	}
 	return errs

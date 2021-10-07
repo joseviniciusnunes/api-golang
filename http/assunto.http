@@ -12,7 +12,7 @@ POST {{url}}/v1/assuntos HTTP/1.1
 content-type: application/json
 
 {
-    "titulo": "teste 123",
+    "titulo": "tes",
     "conteudo": "Uma nova carga foi entregue",
     "icone": "Ionicons.truck",
     "chaveAcaoApp": "CARGA_ENTREGUE",
